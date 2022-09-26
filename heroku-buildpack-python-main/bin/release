@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# bin/release <build-dir>
+
+set -euo pipefail
+
+BUILD_DIR=$1
+BIN_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
+# shellcheck source=bin/utils
+source "$BIN_DIR/utils"
+
+if [[ -f "${BUILD_DIR}/manage.py" ]] && is_module_available 'django' && is_module_available 'psycopg2'; then
+cat <<EOF
+---
+addons:
+  - heroku-postgresql
+EOF
+fi
